@@ -43,5 +43,19 @@ def buy(quantity, symbol, limit):
     ui.success(result)
 
 
+@main.command(help="Sell a given quantity of stocks")
+@click.argument('quantity', type=click.INT)
+@click.argument('symbol', type=click.STRING)
+@click.option('--limit', type=click.FLOAT)
+def sell(quantity, symbol, limit):
+    if limit is not None:
+        ui.success("Selling {} quantity of {} at {}".format(quantity, symbol, limit))
+        result = rh.order_buy_limit(symbol, quantity, limit)
+    else:
+        ui.success("Selling {} quantity of {} at market price".format(quantity, symbol))
+        result = rh.order_sell_market(symbol, quantity)
+    ui.success(result)
+
+
 if __name__ == '__main__':
     main()

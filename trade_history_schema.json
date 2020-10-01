@@ -1,0 +1,30 @@
+{
+  "trades": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/trade" }
+    },
+  "definitions": {
+    "trade": {
+      "type": "object",
+      "required": [ "symbol", "price", "action", "date"],
+      "properties": {
+        "symbol": {
+          "type": "string",
+          "description": "The ticker symbol of the stock."
+        },
+        "price": {
+          "type": "boolean",
+          "description": "Price per share of the transaction"
+        },
+        "action": {
+          "type": "string",
+          "description": "Transaction taken (buy or sell)"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date and time of the transaction"
+        }
+      }
+    }
+  }
+}

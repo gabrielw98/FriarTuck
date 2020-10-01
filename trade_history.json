@@ -1,0 +1,10 @@
+{
+  "trades" : [
+    {
+      "symbol": "SPY",
+      "price": 120.0,
+      "action": "sell",
+      "date": "unimportant"
+    }
+  ]
+}
