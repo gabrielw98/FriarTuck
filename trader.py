@@ -1,9 +1,9 @@
-import fear_greed, client, ui
+import fear_greed
 import json
+from client import Client
 
 # Log into client
-result = client.login()
-ui.success("Success: Logged In") if result is None else ui.error(result)
+client = Client()
 
 # Get trade history
 content = open('trade_history.json').read()

@@ -1,10 +1,10 @@
 import requests
 import ui
-import client
+from client import Client
 from bs4 import BeautifulSoup
 
-buy_threshold = 20
-sell_threshold = 80
+buy_threshold = 25
+sell_threshold = 75
 initial_spy_investment = 100
 symbol = "SPY"
 
@@ -35,12 +35,12 @@ def get_buy_equity_amount(trade_history):
 
 
 def get_sell_equity_amount():
-    return client.get_held_positions()[symbol]["equity"]
+    return Client.held_positions[symbol]["equity"]
 
 
 def owns_spy():
     try:
-        spy_position = client.get_held_positions()["SPY"]
+        spy_position = Client.held_positions[symbol]
         ui.success(spy_position)
         return True
     except KeyError:
