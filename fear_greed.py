@@ -2,6 +2,7 @@ import requests
 import ui
 from client import Client
 from bs4 import BeautifulSoup
+import datetime
 
 buy_threshold = 25
 sell_threshold = 75
@@ -22,15 +23,17 @@ def scrape_fear_greed_index():
 
 
 def get_buy_equity_amount(trade_history):
-    spy_sell_history_dict = {}
     price_to_buy = initial_spy_investment
     min_date = None
 
     for trade in trade_history:
+        print(trade, "trade")
         is_spy_sell = trade["symbol"] == symbol and trade["action"] == "sell"
-        if is_spy_sell and min_date is None or trade["date"] > min_date:
+        current_date = datetime.datetime.strptime(trade["date"], '%m/%d/%Y %H:%M:%S')
+        if is_spy_sell and min_date is None or current_date > min_date:
             price_to_buy = trade["price"]
-    print(spy_sell_history_dict)
+            min_date = current_date
+    print(price_to_buy)
     return price_to_buy
 
 

@@ -1,16 +1,11 @@
 {
     "trades": [
         {
-            "action": "sell", 
-            "date": "unimportant", 
-            "price": 120.0, 
-            "symbol": "SPY"
-        }, 
-        {
             "action": "buy", 
-            "date": "04/10/2020 10:58:29", 
-            "price": 1.0, 
-            "symbol": "AAPL"
+            "date": "10/05/2020 12:52:16", 
+            "price": 100, 
+            "symbol": "AAPL", 
+            "user_id": "gabewils4@gmail.com"
         }
     ]
 }

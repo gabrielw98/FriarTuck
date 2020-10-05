@@ -1,5 +1,4 @@
 import json
-import pprint
 
 
 class TradeHistory:
@@ -11,12 +10,13 @@ class TradeHistory:
             TradeHistory.trade_history = json.load(f)
 
     # Update trade history
-    def update_trade_history(self, symbol, price, action, date):
+    def update_trade_history(self, symbol, price, action, date, user_id):
         new_transaction = {
             "symbol": symbol,
             "price": price,
             "action": action,
-            "date": date
+            "date": date,
+            "user_id": user_id
         }
         TradeHistory.trade_history["trades"].append(new_transaction)
         with open(TradeHistory.trade_history_path, 'w') as outfile:
