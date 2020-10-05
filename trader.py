@@ -1,6 +1,11 @@
 import fear_greed
 import json
 from client import Client
+from trade_history import TradeHistory
+
+# Trade history
+TradeHistory()
+print(TradeHistory.trade_history)
 
 # Log into client
 client = Client()

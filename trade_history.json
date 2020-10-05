@@ -1,10 +1,16 @@
 {
-  "trades" : [
-    {
-      "symbol": "SPY",
-      "price": 120.0,
-      "action": "sell",
-      "date": "unimportant"
-    }
-  ]
+    "trades": [
+        {
+            "action": "sell", 
+            "date": "unimportant", 
+            "price": 120.0, 
+            "symbol": "SPY"
+        }, 
+        {
+            "action": "buy", 
+            "date": "04/10/2020 10:58:29", 
+            "price": 1.0, 
+            "symbol": "AAPL"
+        }
+    ]
 }
