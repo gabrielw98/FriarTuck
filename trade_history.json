@@ -1,11 +1,4 @@
 {
     "trades": [
-        {
-            "action": "buy", 
-            "date": "10/05/2020 12:52:16", 
-            "price": 100, 
-            "symbol": "AAPL", 
-            "user_id": "gabewils4@gmail.com"
-        }
     ]
 }

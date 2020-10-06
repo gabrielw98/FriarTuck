@@ -1,18 +1,20 @@
 import fear_greed
-import json
 from client import Client
 from trade_history import TradeHistory
 
+# Cron job script:
+'''
+15 11 * * 1-5 cd ~/Desktop/workspaces/FriarTuck && /usr/local/bin/python3 trader.py 
+>> ~/Desktop/workspaces/FriarTuck/trader_logs.txt 2>&1
+'''
+
 # Trade history
 TradeHistory()
-print(TradeHistory.trade_history)
 
 # Log into client
 client = Client()
 
 # Trade based on Fear & Greed Index
 current_fear_greed_index = fear_greed.scrape_fear_greed_index()
-investors_are_greedy = current_fear_greed_index >= fear_greed.sell_threshold
-investors_are_fearful = current_fear_greed_index <= fear_greed.buy_threshold
-client.trade_on_fear_and_greed(investors_are_greedy, investors_are_fearful)
+client.trade_on_fear_and_greed(current_fear_greed_index)
 

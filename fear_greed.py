@@ -8,6 +8,7 @@ buy_threshold = 25
 sell_threshold = 75
 initial_spy_investment = 100
 symbol = "SPY"
+algo = "fear_greed"
 
 
 def scrape_fear_greed_index():
@@ -27,13 +28,11 @@ def get_buy_equity_amount(trade_history):
     min_date = None
 
     for trade in trade_history:
-        print(trade, "trade")
         is_spy_sell = trade["symbol"] == symbol and trade["action"] == "sell"
         current_date = datetime.datetime.strptime(trade["date"], '%m/%d/%Y %H:%M:%S')
-        if is_spy_sell and min_date is None or current_date > min_date:
+        if is_spy_sell and (min_date is None or current_date > min_date):
             price_to_buy = trade["price"]
             min_date = current_date
-    print(price_to_buy)
     return price_to_buy
 
 

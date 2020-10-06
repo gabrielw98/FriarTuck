@@ -10,8 +10,11 @@ class TradeHistory:
             TradeHistory.trade_history = json.load(f)
 
     # Update trade history
-    def update_trade_history(self, symbol, price, action, date, user_id):
+    @staticmethod
+    def update_trade_history(algo, index, symbol, price, action, date, user_id):
         new_transaction = {
+            "algo": algo,
+            "index": index,
             "symbol": symbol,
             "price": price,
             "action": action,
@@ -19,5 +22,6 @@ class TradeHistory:
             "user_id": user_id
         }
         TradeHistory.trade_history["trades"].append(new_transaction)
+        print(new_transaction)
         with open(TradeHistory.trade_history_path, 'w') as outfile:
             json.dump(TradeHistory.trade_history, outfile, indent=4, separators=(", ", ": "), sort_keys=True)
