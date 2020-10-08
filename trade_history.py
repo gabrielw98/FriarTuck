@@ -1,5 +1,5 @@
 import json
-
+from twilio.rest import Client
 
 class TradeHistory:
     trade_history = {}
@@ -25,3 +25,13 @@ class TradeHistory:
         print(new_transaction)
         with open(TradeHistory.trade_history_path, 'w') as outfile:
             json.dump(TradeHistory.trade_history, outfile, indent=4, separators=(", ", ": "), sort_keys=True)
+
+        # Send transaction report
+        content = open('config.json').read()
+        config = json.loads(content)
+        twilio_client = Client(config['twilio_account_sid'], config['twilio_auth_token'])
+        twilio_client.messages.create(
+            to=config['phone_number'],
+            from_="+12025179574",
+            body="Order to {} sell ${} of {} completed".format(action, price, symbol)
+        )

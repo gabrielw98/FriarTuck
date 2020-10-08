@@ -9,6 +9,7 @@ import datetime
 # *Populate trade history
 # *Pretty print the trade_history
 # *Run trader.py every morning at 11AM EST
+# TODO Implement golden cross algo to send a text when a buy should take place
 
 
 class Client:
@@ -61,6 +62,7 @@ class Client:
             else:
                 ui.error(result)
         else:
+            # Skip SPY trade because there is not yet a significant fear or greed value
             skipped_dict = {
                 "algo": fear_greed.algo,
                 "index": current_fear_greed_index,

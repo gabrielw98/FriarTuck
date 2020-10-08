@@ -1,1 +1,2 @@
 
+{'algo': 'fear_greed', 'index': 47, 'action': 'skipped', 'date': '10/07/2020 11:16:39', 'price': 'N/A', 'symbol': 'N/A', 'user_id': 'gabewils4@gmail.com'}
