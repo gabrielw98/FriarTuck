@@ -2,9 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dc5fd498-414a-468e-b892-5323d71c16b9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/golden_cross.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/macd.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/spy_tickers.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/stream.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trade_history.py" beforeDir="false" afterPath="$PROJECT_DIR$/trade_history.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fear_greed.py" beforeDir="false" afterPath="$PROJECT_DIR$/fear_greed.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trader.py" beforeDir="false" afterPath="$PROJECT_DIR$/trader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trader_logs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/trader_logs.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -12,6 +18,9 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="FriarTuck" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -27,6 +36,7 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">

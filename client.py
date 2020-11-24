@@ -2,6 +2,7 @@ import json
 import robin_stocks as rh
 import ui
 import fear_greed
+import golden_cross
 from trade_history import TradeHistory
 import datetime
 
@@ -9,7 +10,7 @@ import datetime
 # *Populate trade history
 # *Pretty print the trade_history
 # *Run trader.py every morning at 11AM EST
-# TODO Implement golden cross algo to send a text when a buy should take place
+# TODO Stream IEX data
 
 
 class Client:
@@ -74,3 +75,9 @@ class Client:
             }
             ui.success(skipped_dict)
             return
+
+    def trade_on_golden_cross(self):
+        held_tickers = Client.held_positions.keys()
+        spy_tickers = golden_cross.get_spy_tickers()
+        print(spy_tickers)
+        print(len(spy_tickers - held_tickers))

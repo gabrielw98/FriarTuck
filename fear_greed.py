@@ -4,8 +4,8 @@ from client import Client
 from bs4 import BeautifulSoup
 import datetime
 
-buy_threshold = 25
-sell_threshold = 75
+buy_threshold = 30
+sell_threshold = 70
 initial_spy_investment = 100
 symbol = "SPY"
 algo = "fear_greed"
