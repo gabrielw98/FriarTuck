@@ -2,6 +2,7 @@ import json
 import robin_stocks as rh
 import ui
 import fear_greed
+import macd
 import golden_cross
 from trade_history import TradeHistory
 import datetime
@@ -10,7 +11,9 @@ import datetime
 # *Populate trade history
 # *Pretty print the trade_history
 # *Run trader.py every morning at 11AM EST
-# TODO Stream IEX data
+# TODO create df's for each stock in watch list
+# TODO every day at the same time append the new value and determine if a trade should be made
+
 
 
 class Client:
@@ -75,6 +78,12 @@ class Client:
             }
             ui.success(skipped_dict)
             return
+
+    def trade_on_macd(self):
+        #  TODO eventually change to watchlist
+        symbols = ["AAPL", "WORK", "OSTK", "CHGG"]
+        macd.create_df("SPY")
+
 
     def trade_on_golden_cross(self):
         held_tickers = Client.held_positions.keys()

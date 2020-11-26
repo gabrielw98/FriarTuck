@@ -16,10 +16,12 @@ client = Client()
 
 # Trade based on Fear & Greed Index
 current_fear_greed_index = fear_greed.scrape_fear_greed_index()
-client.trade_on_fear_and_greed(current_fear_greed_index)
+#client.trade_on_fear_and_greed(current_fear_greed_index)
 
 # Trade based on golden cross
 # client.trade_on_golden_cross()
 
 # Trade based on moving average
+client.trade_on_macd()
+
 
