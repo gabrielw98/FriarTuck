@@ -81,8 +81,9 @@ class Client:
 
     def trade_on_macd(self):
         #  TODO eventually change to watchlist
-        symbols = ["AAPL", "WORK", "OSTK", "CHGG"]
-        macd.create_df("SPY")
+        symbols = ["OSTK", "NET", "CHGG", "PINS", "DAL", "SNAP"]
+        for symbol in symbols:
+            macd.create_df(symbol)
 
 
     def trade_on_golden_cross(self):
