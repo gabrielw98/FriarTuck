@@ -11,9 +11,10 @@ import datetime
 # *Populate trade history
 # *Pretty print the trade_history
 # *Run trader.py every morning at 11AM EST
-# TODO create df's for each stock in watch list
-# TODO every day at the same time append the new value and determine if a trade should be made
-
+# *create df's for each stock in watch list
+# *every day at the same time append the new value and determine if a trade should be made
+# TODO use the intersection of the signal line and MACD to make a trade
+# TODO use 2fa to bypass token issue
 
 
 class Client:
@@ -81,9 +82,11 @@ class Client:
 
     def trade_on_macd(self):
         #  TODO eventually change to watchlist
-        symbols = ["OSTK", "NET", "CHGG", "PINS", "DAL", "SNAP"]
+        symbols = ["OSTK"] #, "NET", "CHGG", "PINS", "DAL", "SNAP"]
         for symbol in symbols:
-            macd.create_df(symbol)
+            df = macd.create_df(symbol)
+            macd.add_entry_for_today(symbol, df)
+            macd.get_trade_action(symbol, df)
 
 
     def trade_on_golden_cross(self):
