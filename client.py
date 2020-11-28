@@ -6,6 +6,8 @@ import macd
 import golden_cross
 from trade_history import TradeHistory
 import datetime
+from collections import Counter
+
 
 # *Make client a class and initialize vars
 # *Populate trade history
@@ -13,12 +15,11 @@ import datetime
 # *Run trader.py every morning at 11AM EST
 # *create df's for each stock in watch list
 # *every day at the same time append the new value and determine if a trade should be made
-# TODO use the intersection of the signal line and MACD to make a trade
+# *use the intersection of the signal line and MACD to make a trade
 # TODO use 2fa to bypass token issue
 
 
 class Client:
-
     held_positions = {}
     current_user_id = ""
 
@@ -36,7 +37,6 @@ class Client:
         Client.current_user_id = config['email']
         if result is not None and result["detail"] != "logged in using authentication in robinhood.pickle":
             ui.error(result)
-
 
     def trade_on_fear_and_greed(self, current_fear_greed_index):
 
@@ -82,12 +82,41 @@ class Client:
 
     def trade_on_macd(self):
         #  TODO eventually change to watchlist
-        symbols = ["OSTK"] #, "NET", "CHGG", "PINS", "DAL", "SNAP"]
+        symbols = ["CHWY", "OSTK", "NET", "CHGG", "PINS", "DAL", "SNAP"]
+        restricted_stocks = ["AAPL", "WORK", "PLTR", "ROKU", "ETSY"]
+        symbols = list((Counter(symbols) - Counter(restricted_stocks)).elements())
+
+        current_date_time = datetime.datetime.now().strftime("%m/%d/%Y %H:%M:%S")
         for symbol in symbols:
             df = macd.create_df(symbol)
-            macd.add_entry_for_today(symbol, df)
-            macd.get_trade_action(symbol, df)
+            df = macd.add_entry_for_today(symbol, df)
+            macd.plot_macd(df, symbol)
 
+            action = macd.get_trade_action(df)
+            if action == "buy":
+                # Buy initial investment or the last sold equity
+                price = TradeHistory.get_buy_equity_amount(symbol, "macd")
+                result = rh.order_buy_fractional_by_price(symbol, price, extendedHours=True,
+                                                          timeInForce="gfd")
+                if result is not None and 'account' in result.keys():
+                    TradeHistory.update_trade_history(macd.algo, "N/A", symbol,
+                                                      price,
+                                                      "buy", current_date_time, Client.current_user_id)
+                else:
+                    ui.error(result)
+            elif action == "sell":
+                # Sell entire position
+                price = TradeHistory.get_sell_equity_amount(symbol, "macd")
+                if price != 0.0:
+                    result = rh.order_sell_fractional_by_price(symbol, price,
+                                                               extendedHours=True, timeInForce="gfd")
+                    if result is not None and 'account' in result.keys():
+                        TradeHistory.update_trade_history(macd.algo, "N/A", symbol, price, "sell",
+                                                          current_date_time, Client.current_user_id)
+                    else:
+                        ui.error(result)
+            else:
+                continue
 
     def trade_on_golden_cross(self):
         held_tickers = Client.held_positions.keys()

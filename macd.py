@@ -9,6 +9,8 @@ import pyEX
 import os
 from datetime import datetime, timedelta
 
+algo = "macd"
+
 
 def create_df(symbol):
     file_names = os.listdir('./watchlist_history')
@@ -18,12 +20,11 @@ def create_df(symbol):
             df_cached = True
     if df_cached:
         df = pd.read_pickle("./watchlist_history/{}_history.pkl".format(symbol))
-        plot_macd(df, symbol)
     else:
         current_date = datetime.today()
         three_months_ago = current_date - timedelta(days=30 * 3)
         df = query_iex_history(symbol, current_date, three_months_ago)
-        plot_macd(df, symbol)
+        df = add_entry_for_today(symbol, df)
     return df
 
 
@@ -87,35 +88,11 @@ def plot_macd(df, symbol):
     plt.plot(df['MACD'], color="gray")
     plt.plot(df['signal_line'], color="purple")
 
-    macd_intersections = np.argwhere(np.diff(np.sign(df["MACD"] - df["signal_line"]))).flatten()
+    # macd_intersections = np.argwhere(np.diff(np.sign(df["MACD"] - df["signal_line"]))).flatten()
 
-    for i in range(len(df)-1):
-        prev_entry = df.iloc[[i]]
-        current_entry = df.iloc[[i + 1]]
-
-        prev_macd = prev_entry["MACD"]
-        prev_signal = prev_entry["signal_line"]
-
-        curr_macd = current_entry["MACD"]
-        curr_signal = current_entry["signal_line"]
-
-
-        print(current_entry)
-        #print(i, df[date_index]['26ema'], df[date_index]['12ema'])
-
-    """for date_index, row in df.iterrows():
-        index = df.index.get_loc(date_index)
-        print(index, row['26ema'], row['12ema'])"""
-
-    plt.plot(df["signal_line"][macd_intersections], 'ro')
-
-    macd_buy = []
-    macd_sell = []
-    for i in macd_intersections:
-        if df['signal_line'][i - 1] > df["MACD"][i - 1] and len(macd_sell) == len(macd_buy) and i > 0:
-            macd_buy.append(df["close"][i])
-        elif df['signal_line'][i - 1] < df["MACD"][i - 1] and len(macd_buy) > 0 and i > 0:
-            macd_sell.append(df["close"][i])
+    macd_buy, macd_buy_indexes, macd_sell, macd_sell_indexes = get_signal_crosses(df)
+    plt.plot(df["signal_line"][macd_buy_indexes], 'go')
+    plt.plot(df["signal_line"][macd_sell_indexes], 'ro')
 
     plt.title('{} Profits\nMACD (\${})   vs.   MA (\${})'.format(symbol, get_profit(macd_buy, macd_sell),
                                                                  get_profit(ma_buy, ma_sell)))
@@ -132,11 +109,25 @@ def add_entry_for_today(symbol, df):
     # New DF Entry
     current_date = datetime.today().strftime('%Y-%m-%d')
     current_price = iex_client.quote(symbol)["latestPrice"]
+
+    '''
+    # For testing transaction
+    tomorrow = datetime.today() + timedelta(days=1)
+    last_macd_entry = df.iloc[len(df) - 1, df.columns.get_loc('MACD')]
+    last_signal_entry = df.iloc[len(df) - 1, df.columns.get_loc('signal_line')]
+    sell_row = pd.Series(data={'close': current_price, '26ema': 0.0, '12ema': 0.0, "MACD": last_macd_entry - 5.0, "signal_line" : last_signal_entry + 5.0}, name=current_date)
+    #buy_row = pd.Series(data={'close': current_price, '26ema': 0.0, '12ema': 0.0, "MACD": last_macd_entry + 10.0,
+    #                         "signal_line": last_signal_entry - 10.0}, name=tomorrow)
+    df = df.append(sell_row, ignore_index=False)
+    #df = df.append(buy_row, ignore_index=False)
+    '''
+
     new_row = pd.Series(data={'close': current_price, '26ema': 0.0, '12ema': 0.0, "MACD": 0.0}, name=current_date)
     df = df.append(new_row, ignore_index=False)
-
     update_df_with_macd(df)
-    #pd.to_pickle(df, "./watchlist_history/{}_history.pkl".format(symbol))
+
+    pd.to_pickle(df, "./watchlist_history/{}_history.pkl".format(symbol))
+    return df
 
 
 def get_profit(buy_list, sell_list):
@@ -146,16 +137,39 @@ def get_profit(buy_list, sell_list):
     return round(profit, 2)
 
 
-def get_trade_action(symbol, df):
-    action = "skip"
+def get_signal_crosses(df):
+    macd_buy = []
+    macd_buy_indexes = []
+    macd_sell = []
+    macd_sell_indexes = []
+
+    for i in range(len(df) - 1):
+        # buy when the MACD crosses above its signal line
+        # sell when the MACD crosses below the signal line
+
+        prev_macd = df.iloc[i, df.columns.get_loc('MACD')]
+        prev_signal = df.iloc[i, df.columns.get_loc('signal_line')]
+
+        curr_macd = df.iloc[i + 1, df.columns.get_loc('MACD')]
+        curr_signal = df.iloc[i + 1, df.columns.get_loc('signal_line')]
+        curr_close = df.iloc[i + 1, df.columns.get_loc('close')]
+
+        if prev_signal - prev_macd > 0 and curr_macd - curr_signal > 0 and len(macd_sell) == len(macd_buy):
+            macd_buy.append(curr_close)
+            macd_buy_indexes.append(i + 1)
+        elif prev_macd - prev_signal > 0 and curr_signal - curr_macd > 0 and len(macd_buy) > 0:
+            macd_sell.append(curr_close)
+            macd_sell_indexes.append(i + 1)
+
+    return macd_buy, macd_buy_indexes, macd_sell, macd_sell_indexes
+
+
+def get_trade_action(df):
+    macd_buy, macd_buy_indexes, macd_sell, macd_sell_indexes = get_signal_crosses(df)
     last_index = len(df) - 1
-    # macd_intersections = np.argwhere(np.diff(np.sign(df["MACD"] - df["signal_line"]))).flatten()
-    # if last_index in macd_intersections:
-    if df['signal_line'][last_index - 1] > df["MACD"][last_index - 1] and last_index > 0:
-        # ma_buy.append(df["close"][i])
-        print("Buy:", symbol)
-    elif df['signal_line'][last_index - 1] < df["MACD"][last_index - 1] and last_index > 0:
-        # ma_sell.append(df["close"][i])
-        print("Sell:", symbol)
+    if last_index in macd_buy_indexes:
+        return "buy"
+    elif last_index in macd_sell_indexes:
+        return "sell"
     else:
-        print(action)
+        return "skip"

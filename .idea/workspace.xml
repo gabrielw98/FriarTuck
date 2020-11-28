@@ -5,7 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/client.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/macd.py" beforeDir="false" afterPath="$PROJECT_DIR$/macd.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/trader_logs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/trader_logs.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trade_history.py" beforeDir="false" afterPath="$PROJECT_DIR$/trade_history.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
