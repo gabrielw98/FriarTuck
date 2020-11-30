@@ -24,20 +24,19 @@ def create_df(symbol):
         current_date = datetime.today()
         three_months_ago = current_date - timedelta(days=30 * 3)
         df = query_iex_history(symbol, current_date, three_months_ago)
-        df = add_entry_for_today(symbol, df)
     return df
 
 
-def query_iex_history(symbol, current_date, six_months_ago):
+def query_iex_history(symbol, current_date, three_months_ago):
     content = open('config.json').read()
     config = json.loads(content)
-    if six_months_ago < current_date:
-        df = pd.DataFrame(get_historical_data(symbol, six_months_ago, current_date, output_format='pandas',
+    if three_months_ago < current_date:
+        df = pd.DataFrame(get_historical_data(symbol, three_months_ago, current_date, output_format='pandas',
                                               token=config["iex_api_key"]))
         update_df_with_macd(df)
     else:
         df = np.Dataframe()
-        ui.error("Invalid start date {} and end date {}".format(current_date, six_months_ago))
+        ui.error("Invalid start date {} and end date {}".format(current_date, three_months_ago))
     extra_columns = ["open", "high", "low", "volume"]
     df = df.drop(columns=extra_columns)
     pd.to_pickle(df, "./watchlist_history/{}_history.pkl".format(symbol))

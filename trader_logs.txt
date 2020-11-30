@@ -1,4 +1,3 @@
-
 {'algo': 'fear_greed', 'index': 47, 'action': 'skipped', 'date': '10/07/2020 11:16:39', 'price': 'N/A', 'symbol': 'N/A', 'user_id': 'gabewils4@gmail.com'}
 {'algo': 'fear_greed', 'index': 57, 'action': 'skipped', 'date': '10/15/2020 11:15:02', 'price': 'N/A', 'symbol': 'N/A', 'user_id': 'gabewils4@gmail.com'}
 {'algo': 'fear_greed', 'index': 65, 'action': 'skipped', 'date': '10/16/2020 11:15:03', 'price': 'N/A', 'symbol': 'N/A', 'user_id': 'gabewils4@gmail.com'}
@@ -18,3 +17,4 @@
 {'algo': 'fear_greed', 'index': 63, 'action': 'skipped', 'date': '11/12/2020 11:15:06', 'price': 'N/A', 'symbol': 'N/A', 'user_id': 'gabewils4@gmail.com'}
 {'algo': 'fear_greed', 'index': 57, 'action': 'skipped', 'date': '11/13/2020 11:15:03', 'price': 'N/A', 'symbol': 'N/A', 'user_id': 'gabewils4@gmail.com'}
 {'algo': 'fear_greed', 'index': 74, 'action': 'skipped', 'date': '11/23/2020 11:15:04', 'price': 'N/A', 'symbol': 'N/A', 'user_id': 'gabewils4@gmail.com'}
+{'algo': 'fear_greed', 'index': 87, 'action': 'skipped', 'date': '11/30/2020 11:15:06', 'price': 'N/A', 'symbol': 'N/A', 'user_id': 'gabewils4@gmail.com'}
