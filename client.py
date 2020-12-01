@@ -44,7 +44,6 @@ class Client:
             ui.error(result)
 
     def trade_on_intraday_strategy(self):
-        print("Trade intraday strategy")
         symbols = ["TWLO", "FB"]
 
         account_info = rh.helper.request_get("https://api.robinhood.com/accounts/5XB92092/")["margin_balances"]
@@ -95,7 +94,7 @@ class Client:
             return
 
     def trade_on_macd(self):
-        symbols = ["CHWY", "OSTK", "NET", "CHGG", "PINS", "DAL", "SNAP", "BABA",
+        symbols = ["DRIP", "CHWY", "OSTK", "NET", "CHGG", "PINS", "DAL", "SNAP", "BABA",
                    "BYND", "GRUB", "SPOT", "GPS", "INO", "ENPH", "GOLD", "IDXX"]
         restricted_stocks = ["AAPL", "WORK", "PLTR", "ROKU", "ETSY"]
         symbols = list((Counter(symbols) - Counter(restricted_stocks)).elements())
@@ -108,7 +107,7 @@ class Client:
             # macd.plot_macd(df, symbol)
 
             action = macd.get_trade_action(df)
-            if action == "buy":
+            if action == "buy" and symbol != "GOLD":
                 no_transactions = False
                 # Buy initial investment or the last sold equity
                 price = TradeHistory.get_buy_equity_amount(symbol, "macd")
@@ -120,10 +119,10 @@ class Client:
                 else:
                     ui.error(result)
             elif action == "sell":
-                no_transactions = False
                 # Sell entire position
                 price = TradeHistory.get_sell_equity_amount(symbol, "macd")
                 if price != 0.0:
+                    no_transactions = False
                     result = rh.order_sell_fractional_by_price(symbol, price,
                                                                extendedHours=True, timeInForce="gfd")
                     if result is not None and 'account' in result.keys():
@@ -133,7 +132,6 @@ class Client:
                         ui.error(result)
             else:
                 continue
-
         if no_transactions:
             skipped_dict = {
                 "algo": macd.algo,
