@@ -18,3 +18,6 @@
 {'algo': 'fear_greed', 'index': 57, 'action': 'skipped', 'date': '11/13/2020 11:15:03', 'price': 'N/A', 'symbol': 'N/A', 'user_id': 'gabewils4@gmail.com'}
 {'algo': 'fear_greed', 'index': 74, 'action': 'skipped', 'date': '11/23/2020 11:15:04', 'price': 'N/A', 'symbol': 'N/A', 'user_id': 'gabewils4@gmail.com'}
 {'algo': 'fear_greed', 'index': 87, 'action': 'skipped', 'date': '11/30/2020 11:15:06', 'price': 'N/A', 'symbol': 'N/A', 'user_id': 'gabewils4@gmail.com'}
+{'algo': 'fear_greed', 'index': 86, 'action': 'skipped', 'date': '12/02/2020 11:15:07', 'price': 'N/A', 'symbol': 'N/A', 'user_id': 'gabewils4@gmail.com'}
+{'algo': 'macd', 'index': 'N/A', 'symbol': 'SNAP', 'price': 100.0, 'action': 'buy', 'date': '12/02/2020 11:15:07', 'user_id': 'gabewils4@gmail.com'}
+{'algo': 'macd', 'index': 'N/A', 'symbol': 'GRUB', 'price': 100.0, 'action': 'buy', 'date': '12/02/2020 11:15:07', 'user_id': 'gabewils4@gmail.com'}

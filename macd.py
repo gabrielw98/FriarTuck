@@ -141,9 +141,9 @@ def get_signal_crosses(df):
     macd_buy_indexes = []
     macd_sell = []
     macd_sell_indexes = []
-
+    # print("\n")
     for i in range(len(df) - 1):
-        # buy when the MACD crosses above its signal line
+        # buy when the MACD crosses above its signal line and positive macd
         # sell when the MACD crosses below the signal line
 
         prev_macd = df.iloc[i, df.columns.get_loc('MACD')]
@@ -153,10 +153,12 @@ def get_signal_crosses(df):
         curr_signal = df.iloc[i + 1, df.columns.get_loc('signal_line')]
         curr_close = df.iloc[i + 1, df.columns.get_loc('close')]
 
-        if prev_signal - prev_macd > 0 and curr_macd - curr_signal > 0 and len(macd_sell) == len(macd_buy):
+        if prev_signal - prev_macd > 0 and curr_macd - curr_signal > 0 and curr_macd > 0:
+            # print(curr_close, "buy with this macd", round(curr_macd, 2))
             macd_buy.append(curr_close)
             macd_buy_indexes.append(i + 1)
         elif prev_macd - prev_signal > 0 and curr_signal - curr_macd > 0 and len(macd_buy) > 0:
+            # print(curr_close, "sell with this macd", round(curr_macd, 2))
             macd_sell.append(curr_close)
             macd_sell_indexes.append(i + 1)
 

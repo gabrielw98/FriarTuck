@@ -1,4 +1,22 @@
 {
     "trades": [
+        {
+            "action": "buy", 
+            "algo": "macd", 
+            "date": "12/02/2020 11:15:07", 
+            "index": 2.5,
+            "price": 100.0, 
+            "symbol": "SNAP", 
+            "user_id": "gabewils4@gmail.com"
+        }, 
+        {
+            "action": "buy", 
+            "algo": "macd", 
+            "date": "12/02/2020 11:15:07", 
+            "index": 2.5,
+            "price": 100.0, 
+            "symbol": "GRUB", 
+            "user_id": "gabewils4@gmail.com"
+        }
     ]
 }

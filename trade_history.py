@@ -12,28 +12,38 @@ class TradeHistory:
             TradeHistory.trade_history = json.load(f)
 
     @staticmethod
+    def already_holding_position(symbol, algo):
+        max_date = None
+        last_transaction = ""
+        for trade in TradeHistory.trade_history["trades"]:
+            current_date = datetime.datetime.strptime(trade["date"], '%m/%d/%Y %H:%M:%S')
+            if trade["symbol"] == symbol and trade["algo"] == algo and (max_date is None or current_date > max_date):
+                last_transaction = trade["action"]
+        return last_transaction == "buy"
+
+    @staticmethod
     def get_sell_equity_amount(symbol, algo):
-        min_date = None
+        max_date = None
         price_to_sell = 0.0
         for trade in TradeHistory.trade_history["trades"]:
             is_symbol_sell = trade["symbol"] == symbol and trade["action"] == "buy" and trade["algo"] == algo
             current_date = datetime.datetime.strptime(trade["date"], '%m/%d/%Y %H:%M:%S')
-            if is_symbol_sell and (min_date is None or current_date > min_date):
+            if is_symbol_sell and (max_date is None or current_date > max_date):
                 price_to_sell = trade["price"]
-                min_date = current_date
+                max_date = current_date
         return price_to_sell
 
     @staticmethod
     def get_buy_equity_amount(symbol, algo):
         price_to_buy = TradeHistory.initial_investment
-        min_date = None
+        max_date = None
 
         for trade in TradeHistory.trade_history["trades"]:
             is_symbol_sell = trade["symbol"] == symbol and trade["action"] == "sell" and trade["algo"] == algo
             current_date = datetime.datetime.strptime(trade["date"], '%m/%d/%Y %H:%M:%S')
-            if is_symbol_sell and (min_date is None or current_date > min_date):
+            if is_symbol_sell and (max_date is None or current_date > max_date):
                 price_to_buy = trade["price"]
-                min_date = current_date
+                max_date = current_date
         return price_to_buy
 
     # Update trade history

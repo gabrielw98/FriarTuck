@@ -94,8 +94,10 @@ class Client:
             return
 
     def trade_on_macd(self):
-        symbols = ["DRIP", "CHWY", "OSTK", "NET", "CHGG", "PINS", "DAL", "SNAP", "BABA",
-                   "BYND", "GRUB", "SPOT", "GPS", "INO", "ENPH", "GOLD", "IDXX"]
+        symbols = ["SE", "TTD", "DDOG", "SHOP", "SQ", "DRIP", "CHWY", "OSTK", "NET",
+                   "CHGG", "PINS", "DAL", "SNAP", "BABA", "NET", "IRBT", "MDB", "DKNG",
+                   "BYND", "GRUB", "SPOT", "GPS", "INO", "ENPH", "GOLD", "IDXX", "CRNC"]
+
         restricted_stocks = ["AAPL", "WORK", "PLTR", "ROKU", "ETSY"]
         symbols = list((Counter(symbols) - Counter(restricted_stocks)).elements())
 
@@ -107,7 +109,7 @@ class Client:
             # macd.plot_macd(df, symbol)
 
             action = macd.get_trade_action(df)
-            if action == "buy" and symbol != "GOLD":
+            if action == "buy" and not TradeHistory.already_holding_position(symbol, macd.algo) and False:
                 no_transactions = False
                 # Buy initial investment or the last sold equity
                 price = TradeHistory.get_buy_equity_amount(symbol, "macd")
@@ -118,18 +120,17 @@ class Client:
                                                       "buy", current_date_time, Client.current_user_id)
                 else:
                     ui.error(result)
-            elif action == "sell":
+            elif action == "sell" and TradeHistory.already_holding_position(symbol, macd.algo):
                 # Sell entire position
                 price = TradeHistory.get_sell_equity_amount(symbol, "macd")
-                if price != 0.0:
-                    no_transactions = False
-                    result = rh.order_sell_fractional_by_price(symbol, price,
-                                                               extendedHours=True, timeInForce="gfd")
-                    if result is not None and 'account' in result.keys():
-                        TradeHistory.update_trade_history(macd.algo, "N/A", symbol, price, "sell",
-                                                          current_date_time, Client.current_user_id)
-                    else:
-                        ui.error(result)
+                no_transactions = False
+                result = rh.order_sell_fractional_by_price(symbol, price,
+                                                           extendedHours=True, timeInForce="gfd")
+                if result is not None and 'account' in result.keys():
+                    TradeHistory.update_trade_history(macd.algo, "N/A", symbol, price, "sell",
+                                                      current_date_time, Client.current_user_id)
+                else:
+                    ui.error(result)
             else:
                 continue
         if no_transactions:
